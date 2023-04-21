@@ -1,0 +1,39 @@
+//EP04: Call List
+//Nome: Nicolas Pereira Novaes
+//RA:156.253
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Comparison function for sorting
+int compare(const void *a, const void *b) {
+    return strcmp(*(const char **)a, *(const char **)b);
+}
+
+int main() {
+    int n, i, j;
+    char **name;
+  
+    scanf("%d %d", &n, &j);
+    // Allocate space for the name pointers
+    name = (char **)malloc(n * sizeof(char *));
+    // Read the name
+    for (i = 0; i < n; i++) {
+        // Allocate space for the name
+        name[i] = (char *)malloc(100 * sizeof(char)); 
+        scanf("%s", name[i]);
+    }
+    // Sort the name in alphabetical order
+    qsort(name, n, sizeof(char *), compare);
+
+    printf("%s\n", name[j-1]);
+
+    // Free the allocated memory
+    for (i = 0; i < n; i++) {
+        free(name[i]);
+    }
+    free(name);
+
+    return 0;
+}
