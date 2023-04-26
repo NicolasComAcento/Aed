@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void Intercala(int p, int q, int r, int v[]){
+  int i, j, k, *w;
+  w = malloc ((r-p) * sizeof (int));
+  i = p; j = q; k = 0;
+  while (i < q && j < r){
+    if(v[i] <= v[j]){
+      w[k++] =  v[i++];
+    }else{
+      w[k++] = v[j++];
+    }  
+  }
+  while(i < q){
+    w[k++] = v[i++];
+  }
+  while(j < r){
+    w[k++] = v[j++];
+  }
+  for(i = p; i < r; i++){
+    v[i] = w[i-p];
+  }
+  free(w);
+}
+
+void MergeSort (int p, int r, int v[]){
+  if (p < r-1){
+    int q = (p+r)/2;
+    MergeSort(p, q, v);
+    MergeSort(q, r, v);
+    Intercala(p, q, r, v);
+  }
+}
+
+int main() {
+  int n = 200000;
+  int v[n];
+
+  // Inicializa o gerador de números aleatórios
+  srand(time(NULL)); 
+  
+  // Preenche o vetor com valores aleatórios entre 0 e 9999
+  for(int i = 0; i < n; i++){
+    v[i] = rand() % 200000;
+  }
+  
+  // Mede o tempo de execução
+  clock_t Start, End;
+  Start = clock();
+  
+  MergeSort(0, n, v);
+  
+  End = clock();
+  // converte para milissegundos
+  double tempoExecucao = (double)(End - Start) / CLOCKS_PER_SEC * 1000; 
+  
+  // Imprime o vetor ordenado
+  // for(int i = 0; i < n; i++){
+  //   printf("%d ", v[i]);
+  // }
+  
+  printf("\nTempo de execucao: %.2f ms", tempoExecucao);
+  
+  return 0;
+}
