@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <time.h>
+
+void Seleção(int n, int v[]);
+
+int main() {
+  int n = 200000;
+  int v[n];
+  clock_t start, end;
+  double time;
+
+  // preenche o vetor com valores aleatórios
+  for (int i = 0; i < n; i++) {
+    v[i] = rand() % 200000; // valores entre 0 e 999
+  }
+
+  // inicia a contagem do tempo
+  start = clock();
+
+  // ordena o vetor utilizando SelectionSort
+  Seleção(n, v);
+
+  // finaliza a contagem do tempo
+  end = clock();
+
+  // calcula o tempo decorrido em milissegundos
+  time = ((double) (end - start)) * 1000 / CLOCKS_PER_SEC;
+
+  // imprime o vetor ordenado
+  // printf("Vetor ordenado:\n");
+  // for (int i = 0; i < n; i++) {
+  //   printf("%d ", v[i]);
+  // }
+  // printf("\n");
+
+  // imprime o tempo de execução em milissegundos
+  printf("Tempo de execução: %.2f ms\n", time);
+
+  return 0;
+}
+
+void Seleção(int n, int v[]) {
+  int i, j, min, x;
+  for (i = 0; i < n-1; i++) {
+    min = i;
+    for (j = i+1; j < n; j++) {
+      if (v[j] < v[min]) {
+        min = j;
+      }
+    }
+    x = v[i]; v[i] = v[min]; v[min] = x;
+  }
+}
