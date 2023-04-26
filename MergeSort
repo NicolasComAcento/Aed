@@ -65,3 +65,5 @@ int main() {
   
   return 0;
 }
+
+//Algoritmo do MergeSort retirado do livro "Algoritmos em Linguagem C" do autor Paulo Feofiloff
