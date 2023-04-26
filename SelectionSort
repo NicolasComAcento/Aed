@@ -39,6 +39,8 @@ int main() {
   return 0;
 }
 
+//Algoritmo do SelectionSort retirado do livro "Algoritmos em Linguagem C" do autor Paulo Feofiloff
+
 void Seleção(int n, int v[]) {
   int i, j, min, x;
   for (i = 0; i < n-1; i++) {
