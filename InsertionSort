@@ -41,3 +41,5 @@ void Insertion (int n, int v[]){
     v[i+1] = x;
   }
 }
+
+//Algoritmo do InsertionSort retirado do livro "Algoritmos em Linguagem C" do autor Paulo Feofiloff
