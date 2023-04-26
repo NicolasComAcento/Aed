@@ -49,3 +49,5 @@ int main() {
 
   return 0;
 }
+
+//Algoritmo do QuickSort retirado do livro "Algoritmos em Linguagem C" do autor Paulo Feofiloff
