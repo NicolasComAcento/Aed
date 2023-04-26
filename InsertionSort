@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <time.h>
+
+void Insertion (int n, int v[]);
+
+int main() {
+    int v[200000];
+    int i, n = 200000;
+    clock_t start, end;
+    double time;
+
+    // Inicialização do vetor com números aleatórios
+    for (i = 0; i < n; i++) {
+        v[i] = rand() % 200000;
+    }
+
+    // Medição do time de execução
+    start = clock();
+    Insertion(n, v);
+    end = clock();
+
+    // Cálculo do time de execução em milissegundos
+    time = (end - start) * 1000.0 / CLOCKS_PER_SEC;
+
+    // Impressão do vetor ordenado
+    // for (i = 0; i < n; i++) {
+    //     printf("%d ", v[i]);
+    // }
+    printf("\ntime de execução: %.2f ms\n", time);
+    
+    return 0;
+}
+
+void Insertion (int n, int v[]){
+  int i, j, x;
+  for (j = 1; j < n; j++){
+    x = v[j];
+    for (i = j-1; i >= 0 && v[i] > x; i--){
+      v[i+1] = v[i];
+    }
+    v[i+1] = x;
+  }
+}
