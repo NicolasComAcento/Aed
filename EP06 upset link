@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int containsZelda(const char *str) {
+    const char *substring = "zelda";
+    const int length = strlen(substring);
+
+    //loop through the input
+    for (int i = 0; str[i] != '\0'; i++) {
+        //check if the current character matches the first character
+        if (tolower(str[i]) == substring[0]) {
+            int j;
+            //check the subsequent characters for a potential match
+            for (j = 1; j < length; j++) {
+                //compare lowercase characters of the input string with the substring
+                if (tolower(str[i + j]) != substring[j]) {
+                    break; //break the loop if characters dont match
+                }
+            }
+            //the string is found
+            if (j == length) {
+                return 1; 
+            }
+        }
+    }
+    return 0; 
+}
+int main() {
+    char name[100001];
+    scanf("%s", name);
+
+    if (containsZelda(name)) {
+        printf("Link Bolado\n"); 
+    } else {
+        printf("Link Tranquilo\n"); 
+    }
+    return 0;
+}
