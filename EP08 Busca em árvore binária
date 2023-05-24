@@ -1,0 +1,128 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+//Código feito com váriaveis e nomes em português porque foi como o exercício estava em português o raciocínio me veio assim e não tive tempo para mudar durante a aula
+
+
+typedef struct NoArvore {
+    char dado;
+    struct NoArvore* esquerda;
+    struct NoArvore* direita;
+} NoArvore;
+
+// Função auxiliar para criar um novo nó da árvore
+NoArvore* criarNoArvore(char dado) {
+    NoArvore* novoNo = (NoArvore*)malloc(sizeof(NoArvore));
+    novoNo->dado = dado;
+    novoNo->esquerda = NULL;
+    novoNo->direita = NULL;
+    return novoNo;
+}
+
+// Função para inserir um elemento na árvore
+NoArvore* inserir(NoArvore* raiz, char dado) {
+    if (raiz == NULL) {
+        return criarNoArvore(dado);
+    }
+    
+    if (dado < raiz->dado) {
+        raiz->esquerda = inserir(raiz->esquerda, dado);
+    } else if (dado > raiz->dado) {
+        raiz->direita = inserir(raiz->direita, dado);
+    }
+    
+    return raiz;
+}
+
+// Função para percorrer a árvore em pré-ordem
+void percursoPreOrdem(NoArvore* raiz, int* existeProx) {
+    if (raiz != NULL) {
+        if (!*existeProx) {
+            printf(" ");
+        }
+        
+        printf("%c", raiz->dado);
+        *existeProx = 0;
+        
+        percursoPreOrdem(raiz->esquerda, existeProx);
+        percursoPreOrdem(raiz->direita, existeProx);
+    }
+}
+
+// Função para percorrer a árvore em ordem
+void percursoEmOrdem(NoArvore* raiz, int* existeProx) {
+    if (raiz != NULL) {
+        percursoEmOrdem(raiz->esquerda, existeProx);
+        
+        if (!*existeProx) {
+            printf(" ");
+        }
+        
+        printf("%c", raiz->dado);
+        *existeProx = 0;
+        
+        percursoEmOrdem(raiz->direita, existeProx);
+    }
+}
+
+// Função para percorrer a árvore em pós-ordem
+void percursoPosOrdem(NoArvore* raiz, int* existeProx) {
+    if (raiz != NULL) {
+        percursoPosOrdem(raiz->esquerda, existeProx);
+        percursoPosOrdem(raiz->direita, existeProx);
+        
+        if (!*existeProx) {
+            printf(" ");
+        }
+        
+        printf("%c", raiz->dado);
+        *existeProx = 0;
+    }
+}
+
+// Função para buscar um elemento na árvore
+void buscar(NoArvore* raiz, char dado) {
+    if (raiz == NULL) {
+        printf("%c nao existe\n", dado);
+        return;
+    }
+    
+    if (dado == raiz->dado) {
+        printf("%c existe\n", dado);
+    } else if (dado < raiz->dado) {
+        buscar(raiz->esquerda, dado);
+    } else {
+        buscar(raiz->direita, dado);
+    }
+}
+
+int main() {
+    NoArvore* raiz = NULL;
+    char operacao[10], valor;
+    
+    // Loop para ler as operações e executar os comandos
+    while (scanf("%s", operacao) != EOF) {
+        if (strcmp(operacao, "I") == 0) {
+            scanf(" %c", &valor);
+            raiz = inserir(raiz, valor);
+        } else if (strcmp(operacao, "PREFIXA") == 0) {
+            int existeProx = 1;
+            percursoPreOrdem(raiz, &existeProx);
+            printf("\n");
+        } else if (strcmp(operacao, "INFIXA") == 0) {
+            int existeProx = 1;
+            percursoEmOrdem(raiz, &existeProx);
+            printf("\n");
+        } else if (strcmp(operacao, "POSFIXA") == 0) {
+            int existeProx = 1;
+            percursoPosOrdem(raiz, &existeProx);
+            printf("\n");
+        } else if (strcmp(operacao, "P") == 0) {
+            scanf(" %c", &valor);
+            buscar(raiz, valor);
+        }
+    }
+    
+    return 0;
+}
