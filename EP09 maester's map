@@ -1,0 +1,133 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+//Represent the map
+typedef struct {
+    int width;
+    int height;
+    char **cells;
+} Map;
+
+//Create a new map
+Map *createMap(int width, int height) {
+    Map *map = (Map *)malloc(sizeof(Map));
+    map->width = width;
+    map->height = height;
+
+    map->cells = (char **)malloc(sizeof(char *) * height);
+    for (int i = 0; i < height; i++) {
+        map->cells[i] = (char *)malloc(sizeof(char) * (width + 1));  
+    }
+
+    return map;
+}
+
+void freeMap(Map *map) {
+    if (map == NULL) {
+        return;
+    }
+    for (int i = 0; i < map->height; i++) {
+        free(map->cells[i]);
+    }
+    free(map->cells);
+    free(map);
+}
+
+int isValidMap(Map *map) {
+    int x = 0, y = 0;  //Position on the map
+    int **visited = (int **)malloc(sizeof(int *) * map->height);  //Keep track of visited positions
+
+    for (int i = 0; i < map->height; i++) {
+        visited[i] = (int *)malloc(sizeof(int) * map->width);
+        for (int j = 0; j < map->width; j++) {
+            visited[i][j] = 0;
+        }
+    }
+
+    while (1) {
+        //Check if the current position is outside the map
+        if (x < 0 || x >= map->width || y < 0 || y >= map->height) {
+            return 0;
+        }
+
+        if (visited[y][x]) {
+            return 0;  
+        }
+
+        visited[y][x] = 1;
+
+        char symbol = map->cells[y][x];  //Get the symbol at the current position
+
+        //Check the symbol and update the position
+        switch (symbol) {
+            case '>':
+                x++;
+                break;
+            case '<':
+                x--;
+                break;
+            case 'v':
+                y++;
+                break;
+            case '^':
+                y--;
+                break;
+            case '*':
+                // Found the chest with obsidian
+                for (int i = 0; i < map->height; i++) {
+                    free(visited[i]);
+                }
+                free(visited);
+                return 1;
+            case '.':
+                //Continue to the next position
+                if (x < map->width - 1) {
+                    x++;
+                } else if (y < map->height - 1) {
+                    x = 0;
+                    y++;
+                } else {
+                    //Reach the end of the map without finding the chest
+                    for (int i = 0; i < map->height; i++) {
+                        free(visited[i]);
+                    }
+                    free(visited);
+                    return 0;
+                }
+                break;
+            default:
+                //Invalid symbol
+                for (int i = 0; i < map->height; i++) {
+                    free(visited[i]);
+                }
+                free(visited);
+                return 0;
+        }
+    }
+}
+
+int main() {
+    int width, height;
+
+    //Read the width and height of the map
+    scanf("%d", &width);
+    scanf("%d", &height);
+
+    Map *map = createMap(width, height);
+
+    for (int i = 0; i < height; i++) {
+        scanf("%s", map->cells[i]);
+    }
+
+    //Check if the map is valid
+    int isValid = isValidMap(map);
+
+    //Print the result
+    if (isValid) {
+        printf("*\n");
+    } else {
+        printf("!\n");
+    }
+
+    return 0;
+}
