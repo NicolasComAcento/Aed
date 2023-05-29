@@ -1,0 +1,83 @@
+
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+
+using namespace std;
+
+typedef pair<int, int> pii;
+
+const int INF = INT_MAX;
+
+int dijkstra(vector<vector<pii>>& graph, int source, int destination) {
+    int n = graph.size();
+    vector<int> dist(n, INF);
+    vector<bool> visited(n, false);
+
+    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    pq.push({0, source});
+    dist[source] = 0;
+
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        int d = pq.top().first;
+        pq.pop();
+
+        if (u == destination)
+            return d;
+
+        if (visited[u])
+            continue;
+
+        visited[u] = true;
+
+        for (auto& edge : graph[u]) {
+            int v = edge.first;
+            int weight = edge.second;
+
+            if (dist[u] + weight < dist[v]) {
+                dist[v] = dist[u] + weight;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+
+    return -1; 
+}
+
+int main() {
+    int n, m;
+    while (cin >> n >> m) {
+        vector<vector<pii>> graph(n + 1);
+
+        for (int i = 0; i < m; i++) {
+            int a, b;
+            cin >> a >> b;
+            graph[a].push_back({b, 1});
+            graph[b].push_back({a, 1});
+        }
+
+        int c, r, e;
+        cin >> c >> r >> e;
+
+      
+        for (int i = 0; i < graph[e].size(); i++) {
+            int v = graph[e][i].first;
+            if ((v == c && e == r) || (v == r && e == c)) {
+                graph[e][i].second = 2;
+            } else {
+                graph[e][i] = graph[e].back();
+                graph[e].pop_back();
+                i--;
+            }
+        }
+
+        int minTime1 = dijkstra(graph, c, r);
+        int minTime2 = dijkstra(graph, r, c);
+        int minTime = min(minTime1, minTime2);
+        cout << minTime << endl;
+    }
+
+    return 0;
+}
