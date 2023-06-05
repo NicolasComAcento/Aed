@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+struct TreeNode {
+    struct TreeNode* left;
+    int value;
+    struct TreeNode* right;
+};
+typedef struct TreeNode TreeNode;
+
+int traversalType;
+
+TreeNode* FindParent(TreeNode* root, int value) {
+    if (root == NULL)
+        return NULL;
+    else if (value <= root->value) {
+        if (root->left == NULL)
+            return root;
+        else
+            return FindParent(root->left, value);
+    } else {
+        if (root->right == NULL)
+            return root;
+        else
+            return FindParent(root->right, value);
+    }
+}
+
+void PrintTree(TreeNode* root) {
+    if (root != NULL) {
+        if (traversalType == 1) {
+            printf(" %d", root->value);
+            PrintTree(root->left);
+            PrintTree(root->right);
+        } else if (traversalType == 2) {
+            PrintTree(root->left);
+            printf(" %d", root->value);
+            PrintTree(root->right);
+        } else if (traversalType == 3) {
+            PrintTree(root->left);
+            PrintTree(root->right);
+            printf(" %d", root->value);
+        }
+    }
+}
+
+int main() {
+    TreeNode* root, * parent, * node;
+    int size, numCases, caseNum, i, value;
+
+    root = NULL;
+    scanf("%d", &numCases);
+
+    for (caseNum = 1; caseNum <= numCases; caseNum++) {
+        root = NULL;
+
+        scanf("%d", &size);
+        for (i = 0; i < size; i++) {
+            scanf("%d", &value);
+
+            node = (TreeNode*)malloc(sizeof(TreeNode));
+            node->value = value;
+            node->left = NULL;
+            node->right = NULL;
+
+            parent = FindParent(root, value);
+            if (parent == NULL)
+                root = node;
+            else if (value <= parent->value)
+                parent->left = node;
+            else
+                parent->right = node;
+        }
+
+        printf("Case %d:", caseNum);
+
+        printf("\nPre.:");
+        traversalType = 1;
+        PrintTree(root);
+
+        printf("\nIn..:");
+        traversalType = 2;
+        PrintTree(root);
+
+        printf("\nPost:");
+        traversalType = 3;
+        PrintTree(root);
+
+        printf("\n\n");
+    }
+
+    return 0;
+}
