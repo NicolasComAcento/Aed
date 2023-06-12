@@ -1,0 +1,35 @@
+#include <iostream>
+#include <string>
+
+int main() {
+    int lines;
+    std::cin >> lines;
+
+    while (lines > 0) {
+        int numLines;
+        std::cin >> numLines;
+
+        int totalHash = 0;
+        int i = 0;
+        while (i < numLines) {
+            std::string line;
+            std::cin >> line;
+
+            int lineHash = 0;
+            int j = 0;
+            while (j < line.length()) {
+                int charValue = line[j] - 'A' + i + j;
+                lineHash += charValue;
+                j++;
+            }
+
+            totalHash += lineHash;
+            i++;
+        }
+
+        std::cout << totalHash << std::endl;
+        lines--;
+    }
+
+    return 0;
+}
