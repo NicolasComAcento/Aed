@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+#include <list>
+
+class HashTable {
+    std::vector<std::list<int>> table;
+
+    //Hash function to determine the index
+    int Hash(int value) {
+        return value % table.size();
+    }
+
+public:
+    //Constructor to initialize the hash table
+    HashTable(int tableSize) : table(tableSize) {}
+
+    //Insert a value
+    void insert(int value) {
+        int index = Hash(value);
+        table[index].push_back(value);
+    }
+
+    //Print the contents of the hash
+    void print() {
+        for (int i = 0; i < table.size(); i++) {
+            std::cout << i << " -> ";
+            if (table[i].empty()) {
+                std::cout << "\\" << std::endl;
+            } else {
+                for (int value : table[i]) {
+                    std::cout << value << " -> ";
+                }
+                std::cout << "\\" << std::endl;
+            }
+        }
+    }
+};
+
+int main() {
+    int testCaseCount;
+    std::cin >> testCaseCount; 
+
+    while (testCaseCount > 0) {
+        int tableSize, keyCount;
+        //Read the size of the hash
+        std::cin >> tableSize >> keyCount;
+      
+        //Create a hash table with the specified size
+        HashTable hash(tableSize);
+
+        while (keyCount > 0) {
+            int value;
+            std::cin >> value;
+            //Insert the value into the hash table
+            hash.insert(value);
+            keyCount--;
+        }
+
+        hash.print();
+
+        //Print a blank line between test cases avoiding presentation error
+        if (testCaseCount > 1) {
+            std::cout << std::endl;
+        }
+
+        testCaseCount--;
+    }
+
+    return 0;
+}
