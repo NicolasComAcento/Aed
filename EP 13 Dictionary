@@ -1,0 +1,37 @@
+#include <iostream>
+#include <set>
+#include <cctype>
+
+int main() {
+    std::set<std::string> words;
+
+    // Read input until end of file
+    for (std::string line; std::getline(std::cin, line); ) {
+        std::string word; // Temporary string to store a word
+
+        //Process each character in the line
+        for (char ch : line) {
+            ch = std::tolower(ch);
+
+            bool isAlpha = std::isalpha(ch); //Check if the character is alphabetic
+
+            if (isAlpha) {
+                word += ch;
+            } else if (!word.empty()) {
+                words.insert(word); //Add cleaned word to the set
+                word = ""; //Reset the word
+            }
+        }
+
+        if (!word.empty()) {
+            words.insert(word); // Check if have a word at the end of the line
+        }
+    }
+
+    
+    for (const auto& word : words) {
+        std::cout << word << std::endl;
+    }
+
+    return 0;
+}
