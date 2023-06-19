@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    int Cases;
+    scanf("%d", &Cases); 
+    while (Cases--) { 
+        int People;
+        scanf("%d", &People);
+
+        char languages[100][20]; 
+        int languageCount[100]; 
+        memset(languageCount, 0, sizeof(languageCount));
+        for (int i = 0; i < People; i++) {
+            scanf("%s", languages[i]); //Read the native language of each person
+            languageCount[i]++; //Increment the language count for the respective language
+        }
+
+        int englishSpeaker = -1; 
+        int differentPeople = 0;
+
+        for (int i = 0; i < People; i++) {
+            if (strcmp(languages[i], "ingles") == 0) {
+                englishSpeaker = i; //Store english index
+                break;
+            }
+        }
+
+        if (englishSpeaker != -1) {
+            printf("ingles\n"); //If there is an English speaker, output "ingles"
+        } else {
+            for (int i = 0; i < People - 1; i++) {
+                for (int j = i + 1; j < People; j++) {
+                    if (strcmp(languages[i], languages[j]) != 0) {
+                        differentPeople = 1;
+                        break;
+                    }
+                }
+                if (differentPeople)
+                    break;
+            }
+
+            if (differentPeople) {
+                printf("ingles\n"); //Languages, output "ingles"
+            } else {
+                printf("%s\n", languages[0]); //Language, output that language
+            }
+        }
+    }
+
+    return 0;
+}
