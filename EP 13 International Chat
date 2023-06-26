@@ -12,8 +12,10 @@ int main() {
         int languageCount[100]; 
         memset(languageCount, 0, sizeof(languageCount));
         for (int i = 0; i < People; i++) {
-            scanf("%s", languages[i]); //Read the native language of each person
-            languageCount[i]++; //Increment the language count for the respective language
+            //Read the native language of each person
+            scanf("%s", languages[i]);
+            //Increment the language count for the respective language
+            languageCount[i]++; 
         }
 
         int englishSpeaker = -1; 
@@ -27,7 +29,8 @@ int main() {
         }
 
         if (englishSpeaker != -1) {
-            printf("ingles\n"); //If there is an English speaker, output "ingles"
+            //If there is an English speaker, output "ingles"
+            printf("ingles\n"); 
         } else {
             for (int i = 0; i < People - 1; i++) {
                 for (int j = i + 1; j < People; j++) {
