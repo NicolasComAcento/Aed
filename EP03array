@@ -1,18 +1,16 @@
 #include <stdio.h>
 
 int main(void) {
-  int num[10];
-  int i;
-  for(i=0; i<10; i++)
-  {
-  scanf("%d", &num[i]);
-  if(num[i] > 0)
-  {
-    printf("X[%d] = %d\n", i, num[i]);
-  }else{
-    printf("X[%d] = 1\n",i);
-  }
-  }
-  
-  return 0;
+    int num[10];
+    int i;
+    
+    for(i = 0; i < 10; i++) {
+        scanf("%d", &num[i]);
+        if(num[i] > 0) {
+            printf("X[%d] = %d\n", i, num[i]);
+        } else {
+            printf("X[%d] = 1\n", i);
+        }
+    }
+    return 0;
 }
