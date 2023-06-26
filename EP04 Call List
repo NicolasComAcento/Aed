@@ -34,6 +34,5 @@ int main() {
         free(name[i]);
     }
     free(name);
-
     return 0;
 }
