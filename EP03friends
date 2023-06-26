@@ -3,115 +3,124 @@
 #include <string.h>
 
 typedef struct Node {
-    char nome[100];
-    struct Node* prox;
+    char name[100];
+    struct Node* next;
 } Node;
 
-Node* criarNode(char nome[]) {
+// Function to create a new node
+Node* createNode(char name[]) {
     Node* node = (Node*) malloc(sizeof(Node));
-    strcpy(node->nome, nome);
-    node->prox = NULL;
+    strcpy(node->name, name);
+    node->next = NULL;
     return node;
 }
 
-Node* Insere(Node* ini, char nome[]) {
-    if (ini == NULL) {
-        ini = criarNode(nome);
-        return ini;
+// Function to insert a new node with the given name at the end of the list
+Node* insert(Node* head, char name[]) {
+    if (head == NULL) {
+        // If the list is empty, create a new node and make it the head
+        head = createNode(name);
+        return head;
     }
 
-    Node* atual = ini;
-    while (atual->prox != NULL) {
-        atual = atual->prox;
+    // Traverse the list to find the last node
+    Node* current = head;
+    while (current->next != NULL) {
+        current = current->next;
     }
 
-    atual->prox = criarNode(nome);
-    return ini;
+    // Create a new node and add it after the last node
+    current->next = createNode(name);
+    return head;
 }
 
-void Imprime(Node* ini) {
-    Node* atual = ini;
-    while (atual != NULL) {
-        if(atual->prox != NULL){
-        printf("%s ", atual->nome);
-        atual = atual->prox;
-        }
-        else if (atual->prox == NULL)
-        {
-        printf("%s", atual->nome);
-        atual = atual->prox;
+// Function to print the names in the list
+void printList(Node* head) {
+    Node* current = head;
+    while (current != NULL) {
+        if (current->next != NULL) {
+            // Print the name followed by a space if it's not the last node
+            printf("%s ", current->name);
+            current = current->next;
+        } else {
+            //Print the name without if is the last node
+            printf("%s", current->name);
+            current = current->next;
         }
     }
-  printf("\n");
+    printf("\n");
 }
 
 int main() {
-    Node* ini = NULL;
-    Node* amigo = NULL;
+    Node* list = NULL;
+    Node* friendList = NULL;
 
-    // le a lista atual
     char input[1000];
     fgets(input, 1000, stdin);
-    char* nome = strtok(input, " \n");
-    while (nome != NULL) {
-        ini = Insere(ini, nome);
-        nome = strtok(NULL, " \n");
+    char* name = strtok(input, " \n");
+    while (name != NULL) {
+        // Insert each name into the current list
+        list = insert(list, name);
+        name = strtok(NULL, " \n");
     }
 
-    // le a lista de amigos
     fgets(input, 1000, stdin);
-    nome = strtok(input, " \n");
-    while (nome != NULL) {
-        amigo = Insere(amigo, nome);
-        nome = strtok(NULL, " \n");
+    name = strtok(input, " \n");
+    while (name != NULL) {
+        // Insert each name into the friend list
+        friendList = insert(friendList, name);
+        name = strtok(NULL, " \n");
     }
 
-    // le o nome do amigo que vai receber a nova lista
+    // Read the name of the friend who will receive the new list
     fgets(input, 1000, stdin);
-    nome = strtok(input, " \n");
-    if (strcmp(nome, "nao") == 0) {
-        // adiciona a lista ao final da atual
-        Node* atual = ini;
-        while (atual->prox != NULL) {
-            atual = atual->prox;
+    name = strtok(input, " \n");
+    if (strcmp(name, "no") == 0) {
+        // Add the friend list to the end of the current list
+        Node* current = list;
+        while (current->next != NULL) {
+            current = current->next;
         }
-        atual->prox = amigo;
+        current->next = friendList;
     } else {
-  // insere a lista nova antes
-    Node* prev = NULL;
-    Node* atual = ini;
-    while (atual != NULL && strcmp(atual->nome, nome) != 0) {
-        prev = atual;
-        atual = atual->prox;
-    }
-    if (atual != NULL) {
-        if (prev != NULL) {
-            prev->prox = amigo;
-        } else {
-            ini = amigo;
+        // Insert before the specified name
+        Node* prev = NULL;
+        Node* current = list;
+        while (current != NULL && strcmp(current->name, name) != 0) {
+            prev = current;
+            current = current->next;
         }
-        Node* fim = amigo;
-        while (fim->prox != NULL) {
-            fim = fim->prox;
+        if (current != NULL) {
+            if (prev != NULL) {
+                // Update the previous node's next pointer
+                prev->next = friendList;
+            } else {
+                // If the specified name is the first node, update the head pointer
+                list = friendList;
+            }
+            // Find the last node in the friend list
+            Node* end = friendList;
+            while (end->next != NULL) {
+                end = end->next;
+            }
+            // Connect the end of the list to the node after the name
+            end->next = current;
         }
-        fim->prox = atual;
     }
-}
-    // lista atualizda
-    Imprime(ini);
-    
-    // liberar a memoria
-    Node* atual = ini;
-    while (atual != NULL) {
-        Node* temp = atual;
-        atual = atual->prox;
+
+    printList(list);
+
+    Node* current = list;
+    while (current != NULL) {
+        Node* temp = current;
+        current = current->next;
         free(temp);
     }
-    atual = amigo;
-    while (atual != NULL) {
-        Node* temp = atual;
-        atual = atual->prox;
-        
+    current = friendList;
+    while (current != NULL) {
+        Node* temp = current;
+        current = current->next;
+        free(temp);
     }
 
     return 0;
