@@ -8,19 +8,19 @@ typedef struct Tree {
     struct Tree* right;
 } Tree;
 
-//build the binary tree from preorder and inorder traversals
+// Build the  tree from preorder and inorder traversals
 Tree* buildTree(char* preorder, char* inorder, int length) {
     if (length == 0) {
         return NULL;
     }
 
-    //create a new node with the label from the first element
+    // Freate a new node with the label from the first element
     Tree* root = (Tree*)malloc(sizeof(Tree));
     root->label = preorder[0];
     root->left = NULL;
     root->right = NULL;
 
-    //find the index of the root label in the inorder traversal
+    // Find the index of the root label in the inorder traversal
     int rootIndex = 0;
     while (inorder[rootIndex] != root->label) {
         rootIndex++;
@@ -30,7 +30,7 @@ Tree* buildTree(char* preorder, char* inorder, int length) {
     return root;
 }
 
-//perform post-order traversal of the tree and print the labels
+// Perform post-order traversal of the tree and print the labels
 void postOrderTraversal(Tree* root) {
     if (root == NULL) {
         return;
@@ -53,10 +53,10 @@ int main() {
         char preorder[53], inorder[53];
         scanf("%s %s", preorder, inorder);
 
-        //build the tree using the preorder and inorder traversals
+        // Build the tree using the preorder and inorder traversals
         Tree* root = buildTree(preorder, inorder, numNodes);
 
-        //perform post-order traversal and print the result
+        // Perform post-order traversal and print the result
         postOrderTraversal(root);
         printf("\n");
 
