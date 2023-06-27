@@ -18,7 +18,6 @@ int containsZelda(const char *str) {
                     break; //break the loop if characters dont match
                 }
             }
-            // The string is found
             if (j == length) {
                 return 1; 
             }
